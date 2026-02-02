@@ -1,7 +1,7 @@
+// Vercel serverless function wrapper for Express app
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
 
@@ -18,25 +18,17 @@ mongoose.connect(MONGODB_URI, {
 .then(() => console.log('✅ MongoDB connected'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Routes
-app.use('/auth', require('./routes/auth'));
-app.use('/courses', require('./routes/courses'));
-app.use('/subscribe', require('./routes/subscriptions'));
-app.use('/my-courses', require('./routes/myCourses'));
+// Routes - adjust paths for /api prefix
+app.use('/api/auth', require('../server/routes/auth'));
+app.use('/api/courses', require('../server/routes/courses'));
+app.use('/api/subscribe', require('../server/routes/subscriptions'));
+app.use('/api/my-courses', require('../server/routes/myCourses'));
 
 // Health check
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.json({ message: 'Course Subscription API is running!' });
 });
 
 // Export for Vercel serverless
 module.exports = app;
-
-// Only start server if not in Vercel environment
-if (process.env.VERCEL !== '1') {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-  });
-}
 

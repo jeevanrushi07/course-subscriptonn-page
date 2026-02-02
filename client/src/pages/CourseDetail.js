@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../utils/api';
@@ -14,11 +14,7 @@ const CourseDetail = () => {
   const [subscribing, setSubscribing] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  useEffect(() => {
-    fetchCourse();
-  }, [id]);
-
-  const checkSubscriptionStatus = async (courseData) => {
+  const checkSubscriptionStatus = useCallback(async (courseData) => {
     try {
       const response = await api.get(`/subscribe/check/${id}`);
       setIsSubscribed(response.data.isSubscribed);
@@ -29,9 +25,9 @@ const CourseDetail = () => {
       // If error, assume not subscribed
       setIsSubscribed(false);
     }
-  };
+  }, [id]);
 
-  const fetchCourse = async () => {
+  const fetchCourse = useCallback(async () => {
     try {
       const response = await api.get(`/courses/${id}`);
       const courseData = response.data;
@@ -47,7 +43,11 @@ const CourseDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate, checkSubscriptionStatus]);
+
+  useEffect(() => {
+    fetchCourse();
+  }, [fetchCourse]);
 
   const handlePromoValidation = () => {
     if (!promoCode.trim()) {
