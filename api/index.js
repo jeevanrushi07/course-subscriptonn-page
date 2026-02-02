@@ -45,6 +45,11 @@ app.get('/api', (req, res) => {
   res.json({ message: 'Course Subscription API is running!' });
 });
 
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found', path: req.path });
+});
+
 // Export for Vercel serverless
 module.exports = app;
 
