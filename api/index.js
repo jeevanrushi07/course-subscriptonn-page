@@ -10,28 +10,62 @@ app.use(cors());
 app.use(express.json());
 
 // Database connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/course-subscription';
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('❌ MONGODB_URI environment variable is not set!');
+}
 
 let isConnected = false;
+let connectionPromise = null;
 
 const connectDB = async () => {
-  if (isConnected) {
+  if (isConnected && mongoose.connection.readyState === 1) {
     return;
   }
-  try {
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    isConnected = true;
-    console.log('✅ MongoDB connected');
-  } catch (err) {
-    console.error('❌ MongoDB connection error:', err);
+
+  if (connectionPromise) {
+    return connectionPromise;
   }
+
+  if (!MONGODB_URI) {
+    throw new Error('MONGODB_URI environment variable is not set');
+  }
+
+  connectionPromise = mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+  })
+    .then(() => {
+      isConnected = true;
+      console.log('✅ MongoDB connected');
+      return true;
+    })
+    .catch((err) => {
+      console.error('❌ MongoDB connection error:', err.message);
+      isConnected = false;
+      connectionPromise = null;
+      throw err;
+    });
+
+  return connectionPromise;
 };
 
-// Connect on first request
-connectDB();
+// Middleware to ensure DB connection before routes
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('Database connection failed:', err.message);
+    res.status(500).json({ 
+      message: 'Database connection failed', 
+      error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message 
+    });
+  }
+});
 
 // Import routes
 app.use('/api/auth', require('../server/routes/auth'));
@@ -41,8 +75,21 @@ app.use('/api/my-courses', require('../server/routes/myCourses'));
 
 // Health check
 app.get('/api', async (req, res) => {
-  await connectDB();
-  res.json({ message: 'Course Subscription API is running!', status: 'ok' });
+  try {
+    await connectDB();
+    const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+    res.json({ 
+      message: 'Course Subscription API is running!', 
+      status: 'ok',
+      database: dbStatus,
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    res.status(500).json({ 
+      message: 'API is running but database connection failed', 
+      error: err.message 
+    });
+  }
 });
 
 // 404 handler
@@ -53,7 +100,10 @@ app.use((req, res) => {
 // Error handler
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-  res.status(500).json({ message: 'Internal server error', error: err.message });
+  res.status(err.status || 500).json({ 
+    message: err.message || 'Internal server error',
+    error: process.env.NODE_ENV === 'production' ? undefined : err.stack
+  });
 });
 
 module.exports = app;

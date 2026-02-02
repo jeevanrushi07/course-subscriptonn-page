@@ -3,7 +3,11 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  console.error('⚠️  JWT_SECRET environment variable is not set!');
+}
 
 // Signup
 router.post('/signup', async (req, res) => {
