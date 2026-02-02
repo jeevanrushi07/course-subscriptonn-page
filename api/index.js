@@ -18,14 +18,14 @@ mongoose.connect(MONGODB_URI, {
 .then(() => console.log('✅ MongoDB connected'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Routes - adjust paths for /api prefix
-app.use('/api/auth', require('../server/routes/auth'));
-app.use('/api/courses', require('../server/routes/courses'));
-app.use('/api/subscribe', require('../server/routes/subscriptions'));
-app.use('/api/my-courses', require('../server/routes/myCourses'));
+// Routes - Vercel already routes /api/* to this file, so use base paths
+app.use('/auth', require('../server/routes/auth'));
+app.use('/courses', require('../server/routes/courses'));
+app.use('/subscribe', require('../server/routes/subscriptions'));
+app.use('/my-courses', require('../server/routes/myCourses'));
 
 // Health check
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.json({ message: 'Course Subscription API is running!' });
 });
 
