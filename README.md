@@ -206,7 +206,36 @@ This application is configured for full-stack deployment on Vercel.
 - Deploy `client/` directory
 - Set `REACT_APP_API_URL` to backend URL
 - Build and deploy
+- Set `REACT_APP_API_URL` to backend URL
 
+## Screenshots
+
+### Login/Signup Page
+![Login Page](screenshots/login.png)
+- Clean login/signup interface
+- Form validation
+- Demo credentials displayed
+
+### Home Page - Course Listing
+![Home Page](screenshots/home.png)
+- Grid layout of all courses
+- Course cards with title, description, price
+- Visual distinction between free and paid courses
+- "Subscribed" badge on enrolled courses
+
+### Course Detail Page
+![Course Detail](screenshots/course-detail.png)
+- Full course information
+- Detailed content and learning outcomes
+- Promo code input for paid courses
+- Price display with discount calculation
+- Subscribe button (disabled if already subscribed)
+
+### My Courses Page
+![My Courses](screenshots/my-courses.png)
+- List of all subscribed courses
+- Shows price paid and subscription date
+- Quick access to course details
 
 ## Testing
 
