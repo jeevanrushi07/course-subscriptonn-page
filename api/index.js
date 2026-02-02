@@ -1,4 +1,4 @@
-// Vercel serverless function wrapper for Express app
+// Main Vercel serverless function
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -12,7 +12,6 @@ app.use(express.json());
 // Database connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/course-subscription';
 
-// Connect to MongoDB
 let isConnected = false;
 
 const connectDB = async () => {
@@ -34,15 +33,16 @@ const connectDB = async () => {
 // Connect on first request
 connectDB();
 
-// Routes - Vercel routes /api/* to this file, paths include /api prefix
+// Import routes
 app.use('/api/auth', require('../server/routes/auth'));
 app.use('/api/courses', require('../server/routes/courses'));
 app.use('/api/subscribe', require('../server/routes/subscriptions'));
 app.use('/api/my-courses', require('../server/routes/myCourses'));
 
 // Health check
-app.get('/api', (req, res) => {
-  res.json({ message: 'Course Subscription API is running!' });
+app.get('/api', async (req, res) => {
+  await connectDB();
+  res.json({ message: 'Course Subscription API is running!', status: 'ok' });
 });
 
 // 404 handler
@@ -50,6 +50,11 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found', path: req.path });
 });
 
-// Export for Vercel serverless
+// Error handler
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ message: 'Internal server error', error: err.message });
+});
+
 module.exports = app;
 
