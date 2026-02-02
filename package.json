@@ -1,0 +1,21 @@
+{
+  "name": "mini-course-subscription-app",
+  "version": "1.0.0",
+  "description": "Mini Course Subscription Application - Black Friday Edition",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && nodemon index.js",
+    "client": "cd client && npm start",
+    "install-server": "cd server && npm install",
+    "install-client": "cd client && npm install",
+    "install-all": "npm install && npm run install-server && npm run install-client"
+  },
+  "keywords": ["course", "subscription", "black-friday"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
