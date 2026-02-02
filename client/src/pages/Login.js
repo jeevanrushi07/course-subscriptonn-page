@@ -46,9 +46,24 @@ const Login = () => {
       toast.success(isLogin ? 'Login successful!' : 'Signup successful!');
       navigate('/home');
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || 'Something went wrong. Please try again.'
-      );
+      console.error('Login/Signup error:', error);
+      console.error('Error response:', error.response);
+      console.error('Error message:', error.message);
+      
+      let errorMessage = 'Something went wrong. Please try again.';
+      
+      if (error.response) {
+        // Server responded with error
+        errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+      } else if (error.request) {
+        // Request made but no response
+        errorMessage = 'Cannot connect to server. Please check your connection.';
+      } else {
+        // Error setting up request
+        errorMessage = error.message || 'Something went wrong. Please try again.';
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
