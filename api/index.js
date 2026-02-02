@@ -11,21 +11,37 @@ app.use(express.json());
 
 // Database connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/course-subscription';
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ MongoDB connected'))
-.catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Routes - Vercel already routes /api/* to this file, so use base paths
-app.use('/auth', require('../server/routes/auth'));
-app.use('/courses', require('../server/routes/courses'));
-app.use('/subscribe', require('../server/routes/subscriptions'));
-app.use('/my-courses', require('../server/routes/myCourses'));
+// Connect to MongoDB
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) {
+    return;
+  }
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log('✅ MongoDB connected');
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err);
+  }
+};
+
+// Connect on first request
+connectDB();
+
+// Routes - Vercel routes /api/* to this file, paths include /api prefix
+app.use('/api/auth', require('../server/routes/auth'));
+app.use('/api/courses', require('../server/routes/courses'));
+app.use('/api/subscribe', require('../server/routes/subscriptions'));
+app.use('/api/my-courses', require('../server/routes/myCourses'));
 
 // Health check
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.json({ message: 'Course Subscription API is running!' });
 });
 
