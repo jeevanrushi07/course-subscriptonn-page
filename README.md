@@ -291,4 +291,4 @@ Jeevan Rushi Sudula
 
 ---
 
-**Live Demo:** [View on Vercel](https://course-subscription-app-w5fh.vercel.app)
+**Live Demo:** [View on Vercel](https://course-subscription-app-w5fh-jeevan-rushi-sudulas-projects.vercel.app/)
