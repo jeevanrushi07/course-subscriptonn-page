@@ -206,6 +206,7 @@ This application is configured for full-stack deployment on Vercel.
 - Deploy `client/` directory
 - Set `REACT_APP_API_URL` to backend URL
 - Build and deploy
+- Set `REACT_APP_API_URL` to backend URL
 
 ## Screenshots
 
@@ -294,4 +295,4 @@ Jeevan Rushi Sudula
 
 ---
 
-**Live Demo:** [View on Vercel](https://course-subscription-app-w5fh.vercel.app)
+**Live Demo:** [View on Vercel](https://course-subscription-app-w5fh-jeevan-rushi-sudulas-projects.vercel.app/)
