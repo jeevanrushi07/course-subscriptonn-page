@@ -211,32 +211,35 @@ This application is configured for full-stack deployment on Vercel.
 
 ### Login/Signup Page
 ![Login Page](screenshots/login.png)
-- Clean login/signup interface
-- Form validation
-- Demo credentials displayed
+- Clean login/signup interface with form validation
+- Demo credentials displayed for easy testing
+- Responsive design with modern UI
 
 ### Home Page - Course Listing
 ![Home Page](screenshots/home.png)
-- Grid layout of all courses
-- Course cards with title, description, price
+- Grid layout displaying all available courses
+- Course cards with title, description, price, and thumbnail images
 - Visual distinction between free and paid courses
-- "Subscribed" badge on enrolled courses
+- "✓ Subscribed" badge on enrolled courses
+- Hover effects and smooth transitions
 
 ### Course Detail Page
 ![Course Detail](screenshots/course-detail.png)
-- Full course information
-- Detailed content and learning outcomes
+- Comprehensive course information display
+- Course badges (Level, Duration, Lessons, Instructor)
+- Detailed content with multiple paragraphs
+- "What You'll Learn" section with checkmarks
 - Promo code input for paid courses
-- Price display with discount calculation
-- Subscribe button (disabled if already subscribed)
+- Price display with original and discounted prices
+- Subscribe button (shows "You are subscribed" if already enrolled)
 
 ### My Courses Page
 ![My Courses](screenshots/my-courses.png)
-- List of all subscribed courses
+- List of all courses the user has subscribed to
 - Shows price paid and subscription date
-- Quick access to course details
-
-*Note: Add screenshots to `screenshots/` directory*
+- "✓ Subscribed" badge on each course card
+- Quick access to view course details
+- Empty state with call-to-action when no courses subscribed
 
 ## Testing
 
