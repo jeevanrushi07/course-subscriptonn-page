@@ -1,50 +1,70 @@
-# Course Subscription Application
+# 📚 Mini Course Subscription Application (Black Friday Edition)
 
-A full-stack web application for course subscriptions with authentication, course browsing, and subscription management. Built with React, Node.js, Express, and MongoDB.
+A full-stack web application where users can sign up, view courses, and subscribe to courses based on whether they are free or paid. Features mock payment system with promo code validation.
 
-## Features
+## 🎯 Features
 
-- User authentication (JWT-based signup/login)
-- Browse and view course details
-- Subscribe to free courses instantly
-- Subscribe to paid courses with promo code (BFSALE25 - 50% discount)
-- View subscribed courses
-- Modern UI with TailwindCSS
-- Responsive design
+- **Authentication**: JWT-based authentication with signup and login
+- **Course Management**: Browse and view course details
+- **Subscription System**: 
+  - Free courses: Instant subscription
+  - Paid courses: Require promo code validation (BFSALE25 for 50% discount)
+- **My Courses**: View all subscribed courses
+- **Modern UI**: Built with React and TailwindCSS
+- **Toast Notifications**: User-friendly feedback for all actions
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-**Frontend:** React 18, React Router, Axios, TailwindCSS, React Toastify  
-**Backend:** Node.js, Express.js, MongoDB (Mongoose), JWT, bcryptjs  
-**Database:** MongoDB Atlas
+### Frontend
+- React 18
+- React Router DOM
+- Axios
+- TailwindCSS
+- React Toastify
 
-## Prerequisites
+### Backend
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- JWT (JSON Web Tokens)
+- bcryptjs (Password hashing)
 
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
 - Node.js (v14 or higher)
 - npm or yarn
-- MongoDB Atlas account (free tier available) or local MongoDB installation
+- MongoDB (local installation or MongoDB Atlas account)
 
-## Local Development Setup
+## 🚀 Setup Instructions
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/jeevanrushi07/course-subscription-app.git
-cd course-subscription-app
+git clone <repository-url>
+cd cyberware
 ```
 
 ### 2. Install Dependencies
 
+Install all dependencies (root, server, and client):
+
 ```bash
-# Install root dependencies
+npm run install-all
+```
+
+Or install separately:
+
+```bash
+# Root dependencies
 npm install
 
-# Install server dependencies
+# Server dependencies
 cd server
 npm install
 cd ..
 
-# Install client dependencies
+# Client dependencies
 cd client
 npm install
 cd ..
@@ -54,33 +74,40 @@ cd ..
 
 Create a `.env` file in the `server` directory:
 
+```bash
+cd server
+cp .env.example .env
+```
+
+Edit `server/.env` with your configuration:
+
 ```env
 PORT=5000
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/course-subscription?retryWrites=true&w=majority
+MONGODB_URI=mongodb://localhost:27017/course-subscription
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 ```
 
-**For MongoDB Atlas:**
-1. Create account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Create a free cluster
-3. Create database user
-4. Whitelist IP address (0.0.0.0/0 for development)
-5. Get connection string and update `MONGODB_URI`
+**For MongoDB Atlas (Cloud):**
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/course-subscription
+```
 
 ### 4. Seed the Database
+
+Run the seed script to populate the database with dummy users and courses:
 
 ```bash
 cd server
 node seed.js
 ```
 
-This creates:
+This will create:
 - 3 dummy users (see credentials below)
 - 6 sample courses (mix of free and paid)
 
 ### 5. Start the Application
 
-**Option 1: Run both servers together**
+**Option 1: Run both server and client together (Recommended)**
 
 ```bash
 npm run dev
@@ -104,9 +131,9 @@ The application will be available at:
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
 
-## Demo Credentials
+## 👤 Demo Credentials
 
-After seeding the database, use these credentials to login:
+After seeding the database, you can use these credentials to login:
 
 | Email | Password |
 |-------|----------|
@@ -114,135 +141,136 @@ After seeding the database, use these credentials to login:
 | jane@example.com | password123 |
 | admin@example.com | password123 |
 
-## Promo Code
+## 🎟️ Promo Code
 
 For paid courses, use the following promo code to get 50% discount:
 - **Promo Code**: `BFSALE25`
 - **Discount**: 50% off
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-course-subscription-app/
-├── server/                 # Backend API
-│   ├── models/            # Database models (User, Course, Subscription)
-│   ├── routes/            # API routes (auth, courses, subscriptions, myCourses)
-│   ├── middleware/        # Authentication middleware
-│   ├── index.js           # Server entry point
-│   └── seed.js            # Database seeding script
-├── client/                # React frontend
+cyberware/
+├── server/
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Course.js
+│   │   └── Subscription.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── courses.js
+│   │   ├── subscriptions.js
+│   │   └── myCourses.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── index.js
+│   ├── seed.js
+│   └── package.json
+├── client/
+│   ├── public/
 │   ├── src/
-│   │   ├── components/    # Reusable components (Navbar, PrivateRoute)
-│   │   ├── pages/         # Page components (Login, Home, CourseDetail, MyCourses)
-│   │   ├── utils/         # API utilities
-│   │   └── App.js         # Main app component
-│   └── public/            # Static files
-├── api/                   # Vercel serverless functions
+│   │   ├── components/
+│   │   │   ├── Navbar.js
+│   │   │   └── PrivateRoute.js
+│   │   ├── pages/
+│   │   │   ├── Login.js
+│   │   │   ├── Home.js
+│   │   │   ├── CourseDetail.js
+│   │   │   └── MyCourses.js
+│   │   ├── utils/
+│   │   │   └── api.js
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   └── index.css
+│   └── package.json
+├── package.json
 └── README.md
 ```
 
-## API Endpoints
+## 🔌 API Endpoints
 
 ### Authentication
-- `POST /api/auth/signup` - Create new user account
-- `POST /api/auth/login` - Login and get JWT token
+- `POST /auth/signup` - Create a new user account
+- `POST /auth/login` - Login and get JWT token
 
 ### Courses
-- `GET /api/courses` - Get all courses
-- `GET /api/courses/:id` - Get course by ID
+- `GET /courses` - Get all courses
+- `GET /courses/:id` - Get a specific course by ID
 
 ### Subscriptions
-- `POST /api/subscribe` - Subscribe to a course
+- `POST /subscribe` - Subscribe to a course
   - Body: `{ courseId, promoCode? }`
   - Headers: `Authorization: Bearer <token>`
-- `GET /api/subscribe/check/:courseId` - Check subscription status
 
 ### My Courses
-- `GET /api/my-courses` - Get user's subscribed courses
+- `GET /my-courses` - Get all courses subscribed by the authenticated user
   - Headers: `Authorization: Bearer <token>`
 
-## Deployment
+## 🌐 Deployment
 
-### Deploy to Vercel (Full-Stack)
+### Backend Deployment (Heroku/Railway/Render)
 
-This application is configured for full-stack deployment on Vercel.
-
-1. **Push code to GitHub**
+1. **Create account** on your preferred hosting platform
+2. **Create a new project/app**
+3. **Set environment variables**:
+   - `MONGODB_URI` - Your MongoDB connection string
+   - `JWT_SECRET` - A secure random string
+   - `PORT` - Usually set automatically by the platform
+4. **Deploy**:
    ```bash
-   git push origin main
+   cd server
+   git init
+   git add .
+   git commit -m "Initial commit"
+   # Follow platform-specific deployment instructions
    ```
 
-2. **Import to Vercel**
-   - Go to [Vercel](https://vercel.com)
-   - Sign up/Login with GitHub
-   - Click "Add New" → "Project"
-   - Import your repository
+### Frontend Deployment (Vercel/Netlify)
 
-3. **Configure Build Settings**
-   - Root Directory: `.` (root)
-   - Build Command: `cd client && npm install && npm run build`
-   - Output Directory: `client/build`
-
-4. **Set Environment Variables**
-   ```
-   MONGODB_URI=your-mongodb-atlas-connection-string
-   JWT_SECRET=your-secret-key
-   REACT_APP_API_URL=/api
+1. **Build the React app**:
+   ```bash
+   cd client
+   npm run build
    ```
 
-5. **Deploy**
-   - Click "Deploy"
-   - Wait for deployment to complete
-   - Your app will be live at `your-app.vercel.app`
+2. **Set environment variable**:
+   - `REACT_APP_API_URL` - Your backend API URL (e.g., `https://your-backend.herokuapp.com`)
 
-### Alternative: Separate Deployment
+3. **Deploy**:
+   - **Vercel**: Connect your GitHub repo and deploy
+   - **Netlify**: Drag and drop the `build` folder or connect GitHub
 
-**Backend (Railway/Render/Heroku):**
-- Deploy `server/` directory
-- Set environment variables
-- Get backend URL
+### MongoDB Atlas Setup (Cloud Database)
 
-**Frontend (Vercel/Netlify):**
-- Deploy `client/` directory
-- Set `REACT_APP_API_URL` to backend URL
-- Build and deploy
-- Set `REACT_APP_API_URL` to backend URL
+1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a free cluster
+3. Create a database user
+4. Whitelist your IP address (or use `0.0.0.0/0` for development)
+5. Get your connection string and update `MONGODB_URI` in `.env`
 
-## Screenshots
+## 📸 Screenshots
 
-### Login/Signup Page
-![Login Page](screenshots/login.png)
+### Login Page
 - Clean login/signup interface with form validation
 - Demo credentials displayed for easy testing
-- Responsive design with modern UI
 
-### Home Page - Course Listing
-![Home Page](screenshots/home.png)
-- Grid layout displaying all available courses
-- Course cards with title, description, price, and thumbnail images
+### Home Page
+- Grid layout showing all available courses
+- Course cards with title, description, price, and thumbnail
 - Visual distinction between free and paid courses
-- "✓ Subscribed" badge on enrolled courses
-- Hover effects and smooth transitions
 
 ### Course Detail Page
-![Course Detail](screenshots/course-detail.png)
-- Comprehensive course information display
-- Course badges (Level, Duration, Lessons, Instructor)
-- Detailed content with multiple paragraphs
-- "What You'll Learn" section with checkmarks
+- Full course information
 - Promo code input for paid courses
-- Price display with original and discounted prices
-- Subscribe button (shows "You are subscribed" if already enrolled)
+- Price display with discount calculation
+- Subscribe button (enabled after promo validation for paid courses)
 
 ### My Courses Page
-![My Courses](screenshots/my-courses.png)
-- List of all courses the user has subscribed to
+- List of all subscribed courses
 - Shows price paid and subscription date
-- "✓ Subscribed" badge on each course card
 - Quick access to view course details
-- Empty state with call-to-action when no courses subscribed
 
-## Testing
+## 🧪 Testing the Application
 
 1. **Sign up** with a new account or **login** with demo credentials
 2. **Browse courses** on the home page
@@ -251,48 +279,53 @@ This application is configured for full-stack deployment on Vercel.
 5. **Subscribe to paid courses** using promo code `BFSALE25`
 6. **View your subscriptions** in the "My Courses" page
 
-## Security Features
+## 🔒 Security Features
 
 - Password hashing with bcryptjs
 - JWT token-based authentication
 - Protected routes (authentication middleware)
 - Input validation on both frontend and backend
 - Secure API endpoints with token verification
-- CORS configuration
 
-## Notes
-
-- All payments are **mock-based** - no real payment integration
-- Promo code validation happens on the backend
-- JWT tokens expire after 7 days
-- Duplicate subscriptions are prevented
-- Free courses can be subscribed instantly
-- Paid courses require promo code validation
-
-## Troubleshooting
+## 🐛 Troubleshooting
 
 ### MongoDB Connection Issues
-- Ensure MongoDB Atlas IP whitelist includes your IP (or 0.0.0.0/0)
-- Verify connection string format
-- Check database user credentials
+- Ensure MongoDB is running locally, or
+- Check your MongoDB Atlas connection string
+- Verify network access in MongoDB Atlas
 
 ### Port Already in Use
 - Change `PORT` in `server/.env` to a different port
 - Update frontend API URL if needed
 
+### CORS Errors
+- Ensure backend CORS is configured correctly
+- Check that API URL matches in frontend
+
 ### Build Errors
-- Clear `node_modules` and reinstall
+- Clear `node_modules` and reinstall: `rm -rf node_modules && npm install`
 - Check Node.js version compatibility
-- Verify all environment variables are set
 
-## License
+## 📝 Notes
 
-MIT
+- All payments are **mock-based** - no real payment integration
+- Promo code validation happens on the backend
+- JWT tokens expire after 7 days
+- Duplicate subscriptions are prevented (unique index on userId + courseId)
 
-## Author
+## 🤝 Contributing
 
-Jeevan Rushi Sudula
+Feel free to fork this project and submit pull requests for any improvements.
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 👨‍💻 Author
+
+Built as a full-stack course subscription application with Black Friday promo code feature.
 
 ---
 
-**Live Demo:** [View on Vercel](https://course-subscription-app-w5fh-jeevan-rushi-sudulas-projects.vercel.app/)
+**Happy Learning! 🎓**
+

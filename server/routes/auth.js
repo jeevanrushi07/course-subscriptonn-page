@@ -3,11 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET;
-
-if (!JWT_SECRET) {
-  console.error('⚠️  JWT_SECRET environment variable is not set!');
-}
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
 
 // Signup
 router.post('/signup', async (req, res) => {
@@ -34,9 +30,6 @@ router.post('/signup', async (req, res) => {
     await user.save();
 
     // Generate JWT token
-    if (!JWT_SECRET) {
-      return res.status(500).json({ message: 'Server configuration error: JWT_SECRET not set' });
-    }
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '7d' });
 
     res.status(201).json({
@@ -77,9 +70,6 @@ router.post('/login', async (req, res) => {
     }
 
     // Generate JWT token
-    if (!JWT_SECRET) {
-      return res.status(500).json({ message: 'Server configuration error: JWT_SECRET not set' });
-    }
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '7d' });
 
     res.json({

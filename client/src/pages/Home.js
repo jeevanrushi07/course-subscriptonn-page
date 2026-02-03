@@ -18,14 +18,8 @@ const Home = () => {
       const response = await api.get('/courses');
       setCourses(response.data);
     } catch (error) {
+      toast.error('Failed to load courses');
       console.error('Error fetching courses:', error);
-      console.error('Error details:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-        url: error.config?.url
-      });
-      toast.error(error.response?.data?.message || 'Failed to load courses');
     } finally {
       setLoading(false);
     }

@@ -42,6 +42,3 @@ server/uploads/
 client/.env
 client/build/
 
-# Screenshots (optional - uncomment if you want to exclude)
-# screenshots/
-

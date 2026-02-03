@@ -1,0 +1,72 @@
+{
+  "name": "course-subscription-app",
+  "description": "Render మరియు Vercel మీద deploy చేయడానికి basic configuration సూచనలు.",
+  "services": [
+    {
+      "platform": "render",
+      "type": "web",
+      "name": "course-subscription-backend",
+      "rootDir": "server",
+      "env": "node",
+      "region": "oregon",
+      "plan": "free",
+      "buildCommand": "npm install",
+      "startCommand": "npm start",
+      "envVars": [
+        {
+          "key": "MONGODB_URI",
+          "value": "mongodb+srv://<username>:<password>@<cluster-url>/course-subscription"
+        },
+        {
+          "key": "PORT",
+          "value": "5000",
+          "note": "Render ఆటోమేటిక్‌గా PORT set చేస్తుంది; ఇక్కడ సమాచారం కోసం మాత్రమే."
+        }
+      ]
+    },
+    {
+      "platform": "render",
+      "type": "static",
+      "name": "course-subscription-frontend",
+      "rootDir": "client",
+      "buildCommand": "npm install && npm run build",
+      "staticPublishPath": "build",
+      "envVars": [
+        {
+          "key": "REACT_APP_API_BASE_URL",
+          "value": "https://<your-backend-service-name>.onrender.com"
+        }
+      ],
+      "notes": [
+        "ఈ static site ని backend web service deploy చేసి వచ్చిన public URL కు point చేయాలి.",
+        "ఉదా: REACT_APP_API_BASE_URL = https://course-subscription-backend.onrender.com"
+      ]
+    },
+    {
+      "platform": "vercel",
+      "type": "monorepo-config",
+      "name": "course-subscription-vercel",
+      "configFile": "vercel.json",
+      "projects": [
+        {
+          "id": "api",
+          "path": "api/index.js",
+          "runtime": "@vercel/node"
+        },
+        {
+          "id": "client",
+          "path": "client",
+          "framework": "create-react-app",
+          "buildCommand": "npm run build",
+          "outputDirectory": "build"
+        }
+      ],
+      "notes": [
+        "root లో ఉన్న vercel.json already Vercel కోసం సెట్ అయ్యింది.",
+        "Vercel dashboard లో కొత్త project create చేసేప్పుడు మొత్తం repo ని connect చేస్తే చాలు."
+      ]
+    }
+  ]
+}
+
+
