@@ -11,12 +11,14 @@ app.use(express.json());
 
 // Database connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/course-subscription';
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ MongoDB connected'))
-.catch(err => console.error('❌ MongoDB connection error:', err));
+
+mongoose
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // Routes
 app.use('/auth', require('./routes/auth'));
@@ -29,10 +31,10 @@ app.get('/', (req, res) => {
   res.json({ message: 'Course Subscription API is running!' });
 });
 
-// Export for Vercel serverless
+// Export the app for Vercel serverless functions
 module.exports = app;
 
-// Only start server if not in Vercel environment
+// Only start the server if running outside of Vercel
 if (process.env.VERCEL !== '1') {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
